@@ -15,6 +15,8 @@
 		A4560BFD25E2963B00C99457 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4560BD225E2963900C99457 /* ContentView.swift */; };
 		A4560BFE25E2963B00C99457 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4560BD325E2963A00C99457 /* Assets.xcassets */; };
 		A4560BFF25E2963B00C99457 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4560BD325E2963A00C99457 /* Assets.xcassets */; };
+		A4560C1425E2974F00C99457 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4560C1325E2974F00C99457 /* helpers.swift */; };
+		A4560C1525E2974F00C99457 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4560C1325E2974F00C99457 /* helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,7 @@
 		A4560BF325E2963A00C99457 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4560BF725E2963B00C99457 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		A4560BF925E2963B00C99457 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A4560C1325E2974F00C99457 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +101,10 @@
 		A4560BD025E2963900C99457 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				A4560C1225E296EC00C99457 /* Groupings */,
 				A4560BD125E2963900C99457 /* hnApp.swift */,
 				A4560BD225E2963900C99457 /* ContentView.swift */,
+				A4560C1325E2974F00C99457 /* helpers.swift */,
 				A4560BD325E2963A00C99457 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -149,6 +154,13 @@
 				A4560BF925E2963B00C99457 /* Info.plist */,
 			);
 			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		A4560C1225E296EC00C99457 /* Groupings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Groupings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4560BFC25E2963B00C99457 /* ContentView.swift in Sources */,
+				A4560C1425E2974F00C99457 /* helpers.swift in Sources */,
 				A4560BFA25E2963B00C99457 /* hnApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -318,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4560BFD25E2963B00C99457 /* ContentView.swift in Sources */,
+				A4560C1525E2974F00C99457 /* helpers.swift in Sources */,
 				A4560BFB25E2963B00C99457 /* hnApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
