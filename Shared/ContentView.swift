@@ -10,11 +10,16 @@ import SwiftUI
 struct ContentView: View {
     @State var selection: Set<Int> = [0]
     @State var showComposeWindow = false
+    @State var showSearchBar = false
+    @State var search_term = "";
+    
+    @State var searchBarWidth: CGFloat = 0
     
     var body: some View {
         NavigationView {
             NavBarView()
                 .frame(minWidth: 250, idealWidth: 250, maxHeight: .infinity)
+            PostView()
         }
         .navigationTitle("Hacker News Reader")
         .toolbar {
@@ -26,16 +31,47 @@ struct ContentView: View {
             }
             
             ToolbarItem(placement: .navigation) {
-                Button(action: { self.showComposeWindow = true }) {
+                Button(action: {
+                    self.showSearchBar.toggle()
+                    
+                }) {
                     Image(systemName: "magnifyingglass")
-                }.popover(isPresented: $showComposeWindow) {
-                    Compose(showComposeWindow: $showComposeWindow)
                 }
+                .scaleEffect(!showSearchBar ? 1 : 0)
+                .animation(.easeOut)
+            }
+            
+            ToolbarItem(placement: .navigation) {
+                //                if showSearchBar {
+                TextField("Search", text: $search_term)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(width: showSearchBar ? 100 : 0)
+                    .animation(.easeOut)
+                
+                
+                //                }
             }
             
             ToolbarItem(placement: .automatic) {
                 Button(action: {}) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+            
+            ToolbarItem(placement: .automatic) {
+                Button(action: {
+                    self.showSearchBar.toggle()
+                }) {
+                    Image(systemName: "chevron.right")
+                }
+            }
+            
+            
+            ToolbarItem(placement: .automatic) {
+                Button(action: {self.showComposeWindow = true}) {
                     Image(systemName: "info.circle")
+                }.popover(isPresented: $showComposeWindow) {
+                    Compose(showComposeWindow: $showComposeWindow)
                 }
             }
         }
@@ -49,10 +85,10 @@ struct Compose: View {
         VStack(spacing: 0) {
             HStack {
                 Image(systemName: "person.crop.circle.fill")
-                    .foregroundColor(Color("AccentColor"))
+                    .foregroundColor(Color.white)
                     .opacity(0.7)
                     .font(.system(size: 40))
-                Text("What's happening?")
+                Text("Built By Preet Parekh")
                     .font(.title3)
                     .foregroundColor(.secondary)
                 
@@ -102,40 +138,59 @@ struct NavBarView: View {
                 }
         }
         .font(.headline)
-//        VStack {
-//            VStack {
-//                Picker("", selection: $favoriteColor) {
-//                    Text("New").tag(0)
-//                    Text("Past").tag(1)
-//                    Text("Show").tag(2)
-//                }
-//                .pickerStyle(SegmentedPickerStyle())
-//                .labelsHidden()
-//
-////                Spacer()
-////
-////                Button("Toggle") {
-////                    isLoading.toggle()
-////                }
-//            }
-//            .padding(20)
-//            .frame(height: 100, alignment: .center)
-            
-//            Divider()
-            
-//            VStack {
-//                if isLoading {
-//                    ProgressView()
-//                } else {
-//                    List() {
-//                        ForEach((1...1000).reversed(), id: \.self) {
-//                            symbol in Module(title: "Stand Hours", value: "6", subtitle: "hr")
-//                        }
-//                    }.frame(minWidth: 200, alignment: .center)
-//                    .padding(0)
-//                }
-//            }.frame(maxHeight: .infinity, alignment: .center)
-//        }.frame(maxWidth: .infinity)
+        //        VStack {
+        //            VStack {
+        //                Picker("", selection: $favoriteColor) {
+        //                    Text("New").tag(0)
+        //                    Text("Past").tag(1)
+        //                    Text("Show").tag(2)
+        //                }
+        //                .pickerStyle(SegmentedPickerStyle())
+        //                .labelsHidden()
+        //
+        ////                Spacer()
+        ////
+        ////                Button("Toggle") {
+        ////                    isLoading.toggle()
+        ////                }
+        //            }
+        //            .padding(20)
+        //            .frame(height: 100, alignment: .center)
+        
+        //            Divider()
+        
+        //            VStack {
+        //                if isLoading {
+        //                    ProgressView()
+        //                } else {
+        //                    List() {
+        //                        ForEach((1...1000).reversed(), id: \.self) {
+        //                            symbol in Module(title: "Stand Hours", value: "6", subtitle: "hr")
+        //                        }
+        //                    }.frame(minWidth: 200, alignment: .center)
+        //                    .padding(0)
+        //                }
+        //            }.frame(maxHeight: .infinity, alignment: .center)
+        //        }.frame(maxWidth: .infinity)
+    }
+}
+
+struct PostView: View {
+    @State private var animationValue: CGFloat = 1;
+    var body: some View {
+        //                Text("Dogecoin to the Moon 🚀")
+        //                    .padding()
+        
+        Button("Tap Me") {
+            self.animationValue += 1
+        }.padding(50)
+        .background(Color.red)
+        .foregroundColor(Color.white)
+        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+        .scaleEffect(animationValue)
+        //        .animation(.easeOut)
+        .animation(.interpolatingSpring(stiffness: 50, damping: 1))
+        
     }
 }
 
