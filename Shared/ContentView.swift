@@ -32,20 +32,21 @@ struct ContentView: View {
             
             ToolbarItem(placement: .navigation) {
                 Button(action: {
-                    self.showSearchBar.toggle()
+                    //                    self.showSearchBar.toggle()
                     
                 }) {
                     Image(systemName: "magnifyingglass")
                 }
-                .scaleEffect(!showSearchBar ? 1 : 0)
-                .animation(.easeOut)
+                //                .scaleEffect(!showSearchBar ? 1 : 0)
+                //                .animation(.easeOut)
             }
             
             ToolbarItem(placement: .navigation) {
                 //                if showSearchBar {
                 TextField("Search", text: $search_term)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: showSearchBar ? 100 : 0)
+                    //                    .frame(width: showSearchBar ? 100 : 0)
+                    .frame(width: 120)
                     .animation(.easeOut)
                 
                 
@@ -178,18 +179,18 @@ struct NavBarView: View {
 struct PostView: View {
     @State private var animationValue: CGFloat = 1;
     var body: some View {
-        //                Text("Dogecoin to the Moon 🚀")
-        //                    .padding()
+        Text("Dogecoin to the Moon 🚀")
+            .padding()
         
-        Button("Tap Me") {
-            self.animationValue += 1
-        }.padding(50)
-        .background(Color.red)
-        .foregroundColor(Color.white)
-        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-        .scaleEffect(animationValue)
-        //        .animation(.easeOut)
-        .animation(.interpolatingSpring(stiffness: 50, damping: 1))
+        //        Button("Tap Me") {
+        //            self.animationValue += 1
+        //        }.padding(50)
+        //        .background(Color.red)
+        //        .foregroundColor(Color.white)
+        //        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+        //        .scaleEffect(animationValue)
+        //        //        .animation(.easeOut)
+        //        .animation(.interpolatingSpring(stiffness: 50, damping: 1))
         
     }
 }
