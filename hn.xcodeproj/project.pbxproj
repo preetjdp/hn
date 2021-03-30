@@ -17,6 +17,8 @@
 		A4560BFF25E2963B00C99457 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4560BD325E2963A00C99457 /* Assets.xcassets */; };
 		A4560C1425E2974F00C99457 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4560C1325E2974F00C99457 /* helpers.swift */; };
 		A4560C1525E2974F00C99457 /* helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4560C1325E2974F00C99457 /* helpers.swift */; };
+		A4BA7E1126122B3C00963D6F /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BA7E1026122B3C00963D6F /* Data.swift */; };
+		A4BA7E1226122B3C00963D6F /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BA7E1026122B3C00963D6F /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +55,7 @@
 		A4560BF925E2963B00C99457 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A4560C1325E2974F00C99457 /* helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = helpers.swift; sourceTree = "<group>"; };
 		A4560C2225E2985A00C99457 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A4BA7E1026122B3C00963D6F /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,7 @@
 			children = (
 				A4560C1225E296EC00C99457 /* Groupings */,
 				A4560BD125E2963900C99457 /* hnApp.swift */,
+				A4BA7E1026122B3C00963D6F /* Data.swift */,
 				A4560BD225E2963900C99457 /* ContentView.swift */,
 				A4560C1325E2974F00C99457 /* helpers.swift */,
 				A4560BD325E2963A00C99457 /* Assets.xcassets */,
@@ -325,6 +329,7 @@
 				A4560BFC25E2963B00C99457 /* ContentView.swift in Sources */,
 				A4560C1425E2974F00C99457 /* helpers.swift in Sources */,
 				A4560BFA25E2963B00C99457 /* hnApp.swift in Sources */,
+				A4BA7E1126122B3C00963D6F /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +340,7 @@
 				A4560BFD25E2963B00C99457 /* ContentView.swift in Sources */,
 				A4560C1525E2974F00C99457 /* helpers.swift in Sources */,
 				A4560BFB25E2963B00C99457 /* hnApp.swift in Sources */,
+				A4BA7E1226122B3C00963D6F /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

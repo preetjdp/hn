@@ -6,6 +6,30 @@
 //
 
 import SwiftUI
+import WebKit
+
+struct ScrollViewCleaner: NSViewRepresentable {
+    
+    func makeNSView(context: NSViewRepresentableContext<ScrollViewCleaner>) -> NSView {
+        let nsView = NSView()
+        DispatchQueue.main.async { // on next event nsView will be in view hierarchy
+            if let scrollView = nsView.enclosingScrollView {
+                scrollView.drawsBackground = false
+            }
+        }
+        return nsView
+    }
+    
+    func updateNSView(_ nsView: NSView, context: NSViewRepresentableContext<ScrollViewCleaner>) {
+    }
+}
+
+extension View {
+    func removingScrollViewBackground() -> some View {
+        self.background(ScrollViewCleaner())
+    }
+}
+
 
 struct ContentView: View {
     @State var selection: Set<Int> = [0]
@@ -19,7 +43,7 @@ struct ContentView: View {
         NavigationView {
             NavBarView()
                 .frame(minWidth: 250, idealWidth: 250, maxHeight: .infinity)
-            PostView()
+            //            PostView()
         }
         .navigationTitle("Hacker News Reader")
         .toolbar {
@@ -122,7 +146,7 @@ struct NavBarView: View {
     
     var body: some View {
         TabView {
-            Text("New")
+            NewPostsView()
                 .tabItem {
                     Image(systemName: "1.square.fill")
                     Text("New")
@@ -176,23 +200,133 @@ struct NavBarView: View {
     }
 }
 
-struct PostView: View {
-    @State private var animationValue: CGFloat = 1;
+struct NewPostsView: View {
+    @State var posts: [Post] = []
+    
     var body: some View {
-        Text("Dogecoin to the Moon 🚀")
-            .padding()
+        ZStack {
+            if posts.count == 0 {
+                ProgressView()
+            } else {
+                List(posts){
+                    post in PostComponent(post: post)
+                }
+                .listStyle(SidebarListStyle())
+                
+            }
+            
+        }.onAppear {
+            Api().getNewPosts { (posts) in
+                self.posts = posts
+            }
+        }
+    }
+}
+
+
+struct PostComponent: View {
+    @State var post: Post;
+    
+    var body: some View {
+        NavigationLink(destination: PostView(post: post)) {
+            VStack(alignment: .leading) {
+                Text(post.title).font(.headline)
+                //                Text("This is a test desc").font(.body)
+                if post.by != nil {
+                    Text(post.by!).font(.footnote)
+                }
+            }
+            .navigationTitle(post.title)
+            .padding(.vertical, 8)
+        }
+    }
+}
+
+struct PostView: View {
+    @State var post: Post;
+    
+    var body: some View {
+        //        Text("Dogecoin to the Moon 🚀")
+        //            .padding()
+        if post.url != nil {
+            SafariWebView(mesgURL: post.url!)
+        }
         
-        //        Button("Tap Me") {
-        //            self.animationValue += 1
-        //        }.padding(50)
-        //        .background(Color.red)
-        //        .foregroundColor(Color.white)
-        //        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-        //        .scaleEffect(animationValue)
-        //        //        .animation(.easeOut)
-        //        .animation(.interpolatingSpring(stiffness: 50, damping: 1))
         
     }
+}
+
+struct SafariWebView: View {
+    @ObservedObject var model: WebViewModel
+    
+    init(mesgURL: String) {
+        //Assign the url to the model and initialise the model
+        self.model = WebViewModel(link: mesgURL)
+    }
+    
+    var body: some View {
+        //Create the WebView with the model
+        SwiftUIWebView(viewModel: model)
+    }
+}
+
+class WebViewModel: ObservableObject {
+    @Published var link: String
+    @Published var didFinishLoading: Bool = false
+    @Published var pageTitle: String
+    
+    init (link: String) {
+        self.link = link
+        self.pageTitle = ""
+    }
+}
+
+struct SwiftUIWebView: NSViewRepresentable {
+    
+    public typealias NSViewType = WKWebView
+    @ObservedObject var viewModel: WebViewModel
+    
+    private let webView: WKWebView = WKWebView()
+    public func makeNSView(context: NSViewRepresentableContext<SwiftUIWebView>) -> WKWebView {
+        webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator as? WKUIDelegate
+        webView.load(URLRequest(url: URL(string: viewModel.link)!))
+        return webView
+    }
+    
+    public func updateNSView(_ nsView: WKWebView, context: NSViewRepresentableContext<SwiftUIWebView>) { }
+    
+    public func makeCoordinator() -> Coordinator {
+        return Coordinator(viewModel)
+    }
+    
+    class Coordinator: NSObject, WKNavigationDelegate {
+        private var viewModel: WebViewModel
+        
+        init(_ viewModel: WebViewModel) {
+            //Initialise the WebViewModel
+            self.viewModel = viewModel
+        }
+        
+        public func webView(_: WKWebView, didFail: WKNavigation!, withError: Error) { }
+        
+        public func webView(_: WKWebView, didFailProvisionalNavigation: WKNavigation!, withError: Error) { }
+        
+        //After the webpage is loaded, assign the data in WebViewModel class
+        public func webView(_ web: WKWebView, didFinish: WKNavigation!) {
+            self.viewModel.pageTitle = web.title!
+            self.viewModel.link = web.url?.absoluteString as! String
+            self.viewModel.didFinishLoading = true
+        }
+        
+        public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) { }
+        
+        public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            decisionHandler(.allow)
+        }
+        
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
