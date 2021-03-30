@@ -201,24 +201,20 @@ struct NavBarView: View {
 }
 
 struct NewPostsView: View {
-    @State var posts: [Post] = []
+    @EnvironmentObject var store: Store
     
     var body: some View {
         ZStack {
-            if posts.count == 0 {
+            if store.newPosts.count == 0 {
                 ProgressView()
             } else {
-                List(posts){
+                List(store.newPosts){
                     post in PostComponent(post: post)
                 }
                 .listStyle(SidebarListStyle())
-                
             }
-            
         }.onAppear {
-            Api().getNewPosts { (posts) in
-                self.posts = posts
-            }
+            store.getNewPosts()
         }
     }
 }
