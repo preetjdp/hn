@@ -238,6 +238,7 @@ struct PostComponent: View {
             }
             .navigationTitle(post.title)
             .padding(.vertical, 8)
+            .help(post.title)
         }
     }
 }
