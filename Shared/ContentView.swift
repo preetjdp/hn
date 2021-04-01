@@ -49,6 +49,17 @@ struct ContentView: View {
         .toolbar {
             
             ToolbarItem(placement: .navigation) {
+                Button(action: {
+                    //                    self.showSearchBar.toggle()
+                    
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                }
+                //                .scaleEffect(!showSearchBar ? 1 : 0)
+                //                .animation(.easeOut)
+            }
+            
+            ToolbarItem(placement: .navigation) {
                 Button(action: toggleSidebar) {
                     Image(systemName: "sidebar.left")
                 }
@@ -97,6 +108,12 @@ struct ContentView: View {
                     Image(systemName: "info.circle")
                 }.popover(isPresented: $showComposeWindow) {
                     Compose(showComposeWindow: $showComposeWindow)
+                }
+            }
+            
+            ToolbarItem(placement: .automatic) {
+                Button(action: {}) {
+                    Image(systemName: "square.and.arrow.up")
                 }
             }
         }
