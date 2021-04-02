@@ -246,7 +246,7 @@ struct PostComponent: View {
                 Text(post.title).font(.headline)
                 //                Text("This is a test desc").font(.body)
                 if post.by != nil {
-                    Text(post.by!).font(.footnote)
+                    Text("by \(post.by!)").font(.footnote)
                 }
             }
             .navigationTitle(post.title)
