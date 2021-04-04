@@ -32,6 +32,8 @@ extension View {
 
 
 struct ContentView: View {
+    @EnvironmentObject var store: Store
+    
     @State var selection: Set<Int> = [0]
     @State var showComposeWindow = false
     @State var showSearchBar = false
@@ -50,7 +52,7 @@ struct ContentView: View {
             
             ToolbarItem(placement: .navigation) {
                 Button(action: {
-                    //                    self.showSearchBar.toggle()
+                    store.refresh()
                     
                 }) {
                     Image(systemName: "arrow.clockwise")
@@ -65,28 +67,28 @@ struct ContentView: View {
                 }
             }
             
-            ToolbarItem(placement: .navigation) {
-                Button(action: {
-                    //                    self.showSearchBar.toggle()
-                    
-                }) {
-                    Image(systemName: "magnifyingglass")
-                }
-                //                .scaleEffect(!showSearchBar ? 1 : 0)
-                //                .animation(.easeOut)
-            }
-            
-            ToolbarItem(placement: .navigation) {
-                //                if showSearchBar {
-                TextField("Search", text: $search_term)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    //                    .frame(width: showSearchBar ? 100 : 0)
-                    .frame(width: 120)
-                    .animation(.easeOut)
-                
-                
-                //                }
-            }
+            //            ToolbarItem(placement: .navigation) {
+            //                Button(action: {
+            //                    //                    self.showSearchBar.toggle()
+            //
+            //                }) {
+            //                    Image(systemName: "magnifyingglass")
+            //                }
+            //                //                .scaleEffect(!showSearchBar ? 1 : 0)
+            //                //                .animation(.easeOut)
+            //            }
+            //
+            //            ToolbarItem(placement: .navigation) {
+            //                //                if showSearchBar {
+            //                TextField("Search", text: $search_term)
+            //                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            //                    //                    .frame(width: showSearchBar ? 100 : 0)
+            //                    .frame(width: 120)
+            //                    .animation(.easeOut)
+            //
+            //
+            //                //                }
+            //            }
             
             ToolbarItem(placement: .automatic) {
                 Button(action: {}) {
@@ -103,13 +105,13 @@ struct ContentView: View {
             }
             
             
-            ToolbarItem(placement: .automatic) {
-                Button(action: {self.showComposeWindow = true}) {
-                    Image(systemName: "info.circle")
-                }.popover(isPresented: $showComposeWindow) {
-                    Compose(showComposeWindow: $showComposeWindow)
-                }
-            }
+            //            ToolbarItem(placement: .automatic) {
+            //                Button(action: {self.showComposeWindow = true}) {
+            //                    Image(systemName: "info.circle")
+            //                }.popover(isPresented: $showComposeWindow) {
+            //                    Compose(showComposeWindow: $showComposeWindow)
+            //                }
+            //            }
             
             ToolbarItem(placement: .automatic) {
                 Button(action: {}) {
@@ -168,16 +170,26 @@ struct NavBarView: View {
                     Image(systemName: "1.square.fill")
                     Text("New")
                 }
-            Text("Past")
-                .tabItem {
-                    Image(systemName: "2.square.fill")
-                    Text("Past")
-                }
-            Text("Show")
+//            PastPostsView()
+//                .tabItem {
+//                    Image(systemName: "2.square.fill")
+//                    Text("Past")
+//                }
+            ShowPostsView()
                 .tabItem {
                     Image(systemName: "3.square.fill")
                     Text("Show")
                 }
+            //            Text("Past")
+            //                .tabItem {
+            //                    Image(systemName: "2.square.fill")
+            //                    Text("Past")
+            //                }
+            //            Text("Show")
+            //                .tabItem {
+            //                    Image(systemName: "3.square.fill")
+            //                    Text("Show")
+            //                }
         }
         .font(.headline)
         //        VStack {
@@ -223,7 +235,11 @@ struct NewPostsView: View {
     var body: some View {
         ZStack {
             if store.newPosts.count == 0 {
-                ProgressView()
+                List(store.placeholderPosts){
+                    post in PostComponent(post: post)
+                }
+                .redacted(reason: .placeholder)
+                .listStyle(SidebarListStyle())
             } else {
                 List(store.newPosts){
                     post in PostComponent(post: post)
@@ -232,6 +248,52 @@ struct NewPostsView: View {
             }
         }.onAppear {
             store.getNewPosts()
+        }
+    }
+}
+
+struct PastPostsView: View {
+    @EnvironmentObject var store: Store
+    
+    var body: some View {
+        ZStack {
+            if store.pastPosts.count == 0 {
+                List(store.placeholderPosts){
+                    post in PostComponent(post: post)
+                }
+                .redacted(reason: .placeholder)
+                .listStyle(SidebarListStyle())
+            } else {
+                List(store.pastPosts){
+                    post in PostComponent(post: post)
+                }
+                .listStyle(SidebarListStyle())
+            }
+        }.onAppear {
+            store.getPastPosts()
+        }
+    }
+}
+
+struct ShowPostsView: View {
+    @EnvironmentObject var store: Store
+    
+    var body: some View {
+        ZStack {
+            if store.showPosts.count == 0 {
+                List(store.placeholderPosts){
+                    post in PostComponent(post: post)
+                }
+                .redacted(reason: .placeholder)
+                .listStyle(SidebarListStyle())
+            } else {
+                List(store.showPosts){
+                    post in PostComponent(post: post)
+                }
+                .listStyle(SidebarListStyle())
+            }
+        }.onAppear {
+            store.getShowPosts()
         }
     }
 }
@@ -329,7 +391,7 @@ struct SwiftUIWebView: NSViewRepresentable {
         //After the webpage is loaded, assign the data in WebViewModel class
         public func webView(_ web: WKWebView, didFinish: WKNavigation!) {
             self.viewModel.pageTitle = web.title!
-            self.viewModel.link = web.url?.absoluteString as! String
+            self.viewModel.link = web.url?.absoluteString ?? "https://google.com"
             self.viewModel.didFinishLoading = true
         }
         
