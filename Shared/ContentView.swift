@@ -30,6 +30,16 @@ extension View {
     }
 }
 
+extension View {
+    func tooltip(_ tip: String) -> some View {
+        background(GeometryReader { childGeometry in
+            TooltipView(tip, geometry: childGeometry) {
+                self
+            }
+        })
+    }
+}
+
 
 struct ContentView: View {
     @EnvironmentObject var store: Store
@@ -38,6 +48,7 @@ struct ContentView: View {
     @State var showComposeWindow = false
     @State var showSearchBar = false
     @State var search_term = "";
+    @State private var showPicker = false
     
     @State var searchBarWidth: CGFloat = 0
     
@@ -114,11 +125,14 @@ struct ContentView: View {
             //            }
             
             ToolbarItem(placement: .automatic) {
-                Button(action: {}) {
+                Button(action: {
+                    self.showPicker = true
+                }) {
                     Image(systemName: "square.and.arrow.up")
                 }
+                
             }
-        }
+        }.overlay(SharingsPicker(isPresented: $showPicker, sharingItems: ["https://google.com "]),alignment: .center)
     }
 }
 
@@ -313,7 +327,8 @@ struct PostComponent: View {
             }
             .navigationTitle(post.title)
             .padding(.vertical, 8)
-            .help(post.title)
+//            .help(post.title)
+            .tooltip(post.title)
         }
     }
 }
