@@ -10,13 +10,25 @@ import SwiftUI
 
 
 struct MenuView: View {
+    @EnvironmentObject var store: Store
+    
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Hackernews")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.horizontal)
-                .padding(.top)
+            HStack() {
+                Text("Hackernews")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Spacer()
+                Button(action: {
+                    store.refresh()
+                    
+                }) {
+                    Image(systemName: "arrow.clockwise")
+                }
+            }.padding(.horizontal)
+            .padding(.top)
+            
+            
             NavBarView()
         }
     }
